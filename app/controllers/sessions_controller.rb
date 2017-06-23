@@ -7,8 +7,7 @@ class SessionsController < ApplicationController
     if @user && @user.authenticate(params[:session][:password])
       log_in @user
       params[:session][:remember_me] == '1' ? remember(@user) : forget(@user)
-      params[:session][:remember_me] == '1' ? remember(@user) : forget(@user)
-      redirect_to @user #user_url(user)
+      redirect_back_or @user  # リクエストされたURLが存在する場合はそこにリダイレクトし、ない場合は何らかのデフォルトのURLにリダイレクト
     else
       flash.now[:danger] = 'Invalid email/password combination'
       #flash.nowのメッセージはその後リクエストが発生したときに消滅します

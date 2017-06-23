@@ -11,6 +11,10 @@ gem 'jbuilder',     '2.4.1'
 gem 'minitest', '~> 5.10', '!= 5.10.2'
 gem 'bootstrap-sass', '3.3.6'
 gem 'bcrypt',       '3.1.11'
+gem 'faker',          '1.6.6'
+gem 'will_paginate',           '3.1.0'
+# Railsでページネーションを実装するGemとしてwill_paginate,kaminari
+gem 'bootstrap-will_paginate', '0.0.10'
 
 group :development, :test do
   gem 'sqlite3', '1.3.11'
