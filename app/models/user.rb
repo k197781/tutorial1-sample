@@ -7,7 +7,7 @@ class User < ApplicationRecord
                         uniqueness: { case_sensitive: false }
     has_secure_password
     validates :password, presence: true, length: { minimum: 6 },allow_nil:true # allow_true update の時，空でも大丈夫なように
-    attr_accessor :remember_token, :activation_token
+    attr_accessor :remember_token, :activation_token, :reset_token
     before_save :downcase_email
     before_create :create_activation_digest
     
@@ -41,10 +41,6 @@ class User < ApplicationRecord
         update_attribute(:remember_digest, nil)
     end
     
-    def downcase_email
-       self.email = email.downcase 
-    end
-    
     def activate
         update_columns(activated: true, activated_at: Time.zone.now)
     end
@@ -53,8 +49,24 @@ class User < ApplicationRecord
         UserMailer.account_activation(self).deliver_now
     end
     
+    def create_reset_digest
+        self.rest_token  = User.new_token
+        update_columns(reset_digest: User.digest(reset_token), reset_sent_at: Time.zone.now)
+    end
+    
+    def send_password_reset_email
+        UserMailer.password_reset(self).deliver_now
+    end
+    
+    def password_reset_expired?
+        reset_sent_at < 2.hours.ago
+    end
     
     private
+    
+        def downcase_email
+           self.email = email.downcase 
+        end
     
         def create_activation_digest
             self.activation_token = User.new_token
