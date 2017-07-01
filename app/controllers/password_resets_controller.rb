@@ -25,7 +25,7 @@ class PasswordResetsController < ApplicationController
     if params[:user][:password].empty?  # 新しいパスワードが空文字列になっていないか (ユーザー情報の編集ではOKだった)
       @user.errors.add(:password,"can't be empty")
       render 'edit'
-    elsif @user.update_attribute(user_params)  #新しいパスワードが正しければ、更新する
+    elsif @user.update_attributes(user_params)  #新しいパスワードが正しければ、更新する
       log_in @user
       @user.update_attribute(:reset_digest, nil)
       flash[:success] = "Password has been reset."
