@@ -1,0 +1,10 @@
+<% unless current_user?(@user) %>
+<!--  今のユーザが@user(ページのユーザ)でない時  -->
+  <div id="follow_form">
+  <% if current_user.following?(@user) %>
+    <%= render 'unfollow' %>
+  <% else %>
+    <%= render 'follow' %>
+  <% end %>
+  </div>
+<% end %>
